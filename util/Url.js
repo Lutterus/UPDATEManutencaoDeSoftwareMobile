@@ -3,5 +3,6 @@ module.exports = {
     LOGIN: 'login/',
     MILES_LIST: 'getPrograms/',
     PROGRAMS_LIST: 'getProgramsDefault',
-    ADD_USER: 'addUser'
+    ADD_USER: 'addUser',
+    ADD_MILE: 'addMile',
   };

@@ -1,12 +1,11 @@
 const global = require('../util/Url');
 const BASE_URL = global.BASE_URL;
-const MILES_LIST = global.MILES_LIST;
 
-class MilesService {
+class DefaultProgramService {
     constructor() {}
 
-    listMiles = async (currentUser) => {
-        let url = BASE_URL + MILES_LIST + currentUser;
+    getDefaultPrograms = async () => {
+        let url = BASE_URL + global.PROGRAMS_LIST
         return fetch(url)
             .then((response) => response.json())
             .then((json) => {
@@ -17,4 +16,4 @@ class MilesService {
             });
       }
 }
-export default MilesService;
+export default DefaultProgramService;

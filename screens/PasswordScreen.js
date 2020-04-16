@@ -7,28 +7,29 @@ import {
   TextInput,
   Dimensions,
   KeyboardAvoidingView,
-  Alert
+  Alert,
+  TouchableOpacity
 } from "react-native";
-import { NavigationScreenProp } from "react-navigation";
-//import PasswordService from "../services/PasswordService";
+import PasswordService from "../services/PasswordService";
+import { HeaderHeightContext } from "react-navigation-stack";
 
-type State = {
-  email: string
-};
-
-type Props = {
-  navigation: NavigationScreenProp<{}>
-};
-
-class PasswordContainer extends React.Component<Props, State> {
-  PasswordService;
-  constructor(props: Props) {
-    super(props);
-    //this.passwordService = new PasswordService();
+class PasswordScreen extends React.Component {
+  constructor() {
+    super();
+    this.PasswordService = new PasswordService();
     this.state = {
-      email: ""
+        email: ""
     };
   }
+
+  static navigationOptions = {
+    title: "Esqueci minha senha",
+    headerTitleStyle: {
+      textAlign: "left",
+      flex: 1,
+      color: "#083b66"
+    }
+  };
 
   onChange = event => {
     const { name, value } = event.target;
@@ -38,7 +39,7 @@ class PasswordContainer extends React.Component<Props, State> {
 
   resetEmail = async () => {
     if (this.state.email != "") {
-      var res = false//await this.passwordService.resetPassword(this.state.email);
+      var res = await this.passwordService.resetPassword(this.state.email);
       if (res === true) {
         Alert.alert(
           "Sucesso",
@@ -66,15 +67,16 @@ class PasswordContainer extends React.Component<Props, State> {
     }
   };
 
-  render() {
+   render() {
     return (
       <View
         style={{
           flex: 6,
-          alignItems: "center"
+          alignItems: "center",
+          justifyContent:'center'
         }}
       >
-        <CardView style={styles.inputView}>
+        <View style={styles.inputView}>
           <TextInput
             placeholder="Email"
             underlineColorAndroid={"#0000"}
@@ -84,7 +86,7 @@ class PasswordContainer extends React.Component<Props, State> {
             autoCapitalize="none"
             onChangeText={TextInput => this.setState({ email: TextInput })}
           />
-        </CardView>
+        </View>
         <KeyboardAvoidingView
           behavior="padding"
           style={{
@@ -94,17 +96,17 @@ class PasswordContainer extends React.Component<Props, State> {
             alignItems: "center"
           }}
         >
-          <CardButton
-            viewStyle={{
-              justifyContent: "center",
-              marginVertical: 20,
-              width: Dimensions.get("window").width * 0.5,
-              backgroundColor: "#083b66"
-            }}
-            textStyle={{ fontSize: 16, color: "white" }}
-            text="Enviar"
-            onPress={() => this.resetEmail()}
-          />
+        <View style={styles.inputView}>
+            <TouchableOpacity
+                viewStyle={{
+                  flex:1,
+                }}
+                onPress={this.resetEmail}>
+                  <Text style={{ fontSize: 16, color: "white" }}>
+                    Login
+                  </Text>
+            </TouchableOpacity>
+        </View>    
         </KeyboardAvoidingView>
       </View>
     );
@@ -112,24 +114,26 @@ class PasswordContainer extends React.Component<Props, State> {
 }
 
 const styles = StyleSheet.create({
-  text: {
-    color: "black",
-    fontSize: 18,
-    textAlign: "left",
-    alignSelf: "stretch"
-  },
-  inputView: {
-    borderRadius: 4,
-    marginTop: 30,
-    padding: 10
-  },
-  signUp: {
-    color: "#083b66",
-    fontSize: 13,
-    textAlign: "center",
-    marginBottom: 5,
-    fontWeight: "bold"
-  }
-});
+    text: {
+      color: "black",
+      fontSize: 18,
+      textAlign: "left",
+      alignSelf: "stretch"
+    },
+    inputView: {
+      borderRadius: 4,
+      marginTop: 30,
+      padding: 10,
+      backgroundColor: '#083b66',
+      width: Dimensions.get("window").width * 0.7
+    },
+    signUp: {
+      color: "#083b66",
+      fontSize: 13,
+      textAlign: "center",
+      marginBottom: 5,
+      fontWeight: "bold"
+    }
+  });  
 
-export default PasswordContainer;
+export default PasswordScreen;

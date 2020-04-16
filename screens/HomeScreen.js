@@ -50,8 +50,7 @@ class HomeScreen extends React.Component {
     } else {
       AsyncStorage.setItem("login", this.state.email);
       AsyncStorage.setItem("password", this.state.senha);
-      console.log("AAAAAAAAAAAAA")
-      //this.props.navigation.navigate("MilesList");
+      this.props.navigation.navigate("MilesList");
     }
   };
 

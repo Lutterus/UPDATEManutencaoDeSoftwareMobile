@@ -2,9 +2,8 @@ const global = require('../util/Url');
 const BASE_URL = global.BASE_URL;
 
 class LoginService {
-    constructor() {
-
-    }
+    constructor() {}
+    
   login = async (login, password) =>{
     let url = BASE_URL + global.LOGIN
       return fetch(url, {

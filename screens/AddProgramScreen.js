@@ -25,7 +25,8 @@ class AddProgramScreen extends React.Component {
         json: this.componentDidMount(2),
       quantidade: 0,
       date: null,
-      programa: null
+      programa: null,
+      user: ""
     };
   }
 
@@ -37,11 +38,11 @@ class AddProgramScreen extends React.Component {
     }
   };
 
-  setProgramsDefault = async () => {
+  setProgramsDefault = async (res) => {
     programsList = [];
     var list = await this.DefaultProgramService.getDefaultPrograms();
-    console.log(list)
     if(list != false){
+        this.setState({ user: res })
         for (i in list) {
             programsList.push(list[i].nome);
         }
@@ -63,27 +64,23 @@ class AddProgramScreen extends React.Component {
 
   componentDidMount(index) {
     AsyncStorage.getItem("login", (err, result) => {}).then(res => {
-      if (index === 1) {
-        this.addProgram(res);
-      } else if (index === 2) {
-        this.setProgramsDefault();
-      }
+      this.setProgramsDefault(res);
     });
   }
 
-  addProgram = async accountLogin => {
+  addProgram = async () => {
     if (
       this.state.quantidade != 0 &&
       this.state.programa != null &&
       this.state.date != null
     ) {
-      var res = await this.programService.addProgram(
+      var res = await this.ProgramService.addProgram(
         this.state.programa,
-        accountLogin,
+        this.state.user,
         this.state.quantidade,
         this.state.date
       );
-      if (res === true) {
+      if (res != false) {
         Alert.alert("Sucesso", "Milhas adicionadas com sucesso", [
           {
             text: "OK",
@@ -113,7 +110,7 @@ class AddProgramScreen extends React.Component {
           <View style={styles.inputView}>
             <Picker
               selectedValue={this.state.programa}
-              style={{ height: 40, width: 300 }}
+              style={{ height: 40, width: 300, itemStyle: "white" }}
               onValueChange={(itemValue, itemIndex) =>
                 this.setState({ programa: itemValue })
               }
@@ -167,7 +164,7 @@ class AddProgramScreen extends React.Component {
                 viewStyle={{
                   flex:1,
                 }}
-                onPress={this.resetEmail}>
+                onPress={this.addProgram}>
                   <Text style={{ fontSize: 16, color: "white", textAlign: "center" }}>
                     Salvar
                   </Text>

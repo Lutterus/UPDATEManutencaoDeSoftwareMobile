@@ -65,9 +65,14 @@ class MilesListScreen extends React.Component {
     
   };
 
-  saveStateBeforeLaunch(program_Name) {
-    AsyncStorage.setItem("nome_programa", program_Name);
-    this.state.navigation.navigate("DetailProgram");
+  saveStateBeforeLaunch = async (program_Name) => {
+    // Persisting data
+    try {
+      await AsyncStorage.setItem('nome_programa', program_Name);
+    } catch (error) {
+      // Error saving data
+    }
+    this.props.navigation.navigate("DetailProgram");
   }
 
   render() {
@@ -90,7 +95,7 @@ class MilesListScreen extends React.Component {
                     </View>
                     <View style={styles.columnView}>
                         <View style={{ flex: 1}}>
-                        <Text style={styles.programName}> {this.state.milesList.nome} </Text>
+                        <Text style={styles.programName}> {item.nome} </Text>
                         </View>
                         <View style={{ flex: 0.3}}>
                         <Text style={styles.date}>
@@ -101,7 +106,7 @@ class MilesListScreen extends React.Component {
                     <View style={{ flex: 1, justifyContent: "center", alignItems: "center"}}>
                         <Text style={styles.miles}>
                         <Text style ={{fontSize: 14, color: "darkgray"}}> total: </Text>
-                        {this.state.milesList.somaMilhas}
+                        {item.somaMilhas}
                         </Text>
                     </View>
                 </View>

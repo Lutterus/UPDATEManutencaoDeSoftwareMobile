@@ -11,7 +11,6 @@ import {
   TouchableOpacity
 } from "react-native";
 import PasswordService from "../services/PasswordService";
-import { HeaderHeightContext } from "react-navigation-stack";
 
 class PasswordScreen extends React.Component {
   constructor() {

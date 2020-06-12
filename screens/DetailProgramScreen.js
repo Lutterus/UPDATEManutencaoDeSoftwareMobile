@@ -70,6 +70,9 @@ class DetailProgramScreen extends React.Component {
     });
   }
 
+  _end() {
+  }
+
   updateDetailList = async (currentUser, cod_program) => {
     const list = await this.DetailService.getUserProgramMiles(currentUser, cod_program);
     this.setState({ detailList: list });
@@ -97,7 +100,7 @@ class DetailProgramScreen extends React.Component {
 
               <View style={styles.entireBoxView}>
                 <TouchableOpacity
-                  onPress={() => this.buttonMethod(item.nome)}
+                  onPress={() => this.buttonMethod(item)}
                 >
                   <View style={styles.entireBox}>
 
@@ -117,9 +120,8 @@ class DetailProgramScreen extends React.Component {
             )}
             keyExtractor={item => item.contaLogin}
             />
-
+            
         </ImageBackground>
-
       </View>
     );
   }
@@ -157,14 +159,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRightWidth: 1,
-    //borderLeftWidth: 1,
     borderColor: '#083b66'
   },
   insideItemViewRight:{
     flex:1,
     justifyContent: 'center',
     alignItems: 'center',
-    //borderRightWidth: 1,
     borderLeftWidth: 1,
     borderColor: '#083b66'
   },

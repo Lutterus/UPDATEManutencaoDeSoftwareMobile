@@ -15,9 +15,7 @@ import * as Font from 'expo-font';
 import Icon from "react-native-vector-icons/FontAwesome";
 import MilesService from "../services/MilesService";
 import { AsyncStorage } from "react-native";
-import { HeaderBackButton } from 'react-navigation-stack';
 import { NavigationEvents } from 'react-navigation';
-import { block } from "react-native-reanimated";
 
 class MilesListScreen extends React.Component {
   constructor() {
@@ -127,29 +125,29 @@ class MilesListScreen extends React.Component {
 
                   <View style={styles.entireBoxView}>
                     <TouchableOpacity
-                    onPress={() => this.saveStateBeforeLaunch(item.nome)}
+                      onPress={() => this.saveStateBeforeLaunch(item.nome)}
                     >
                       <View style={styles.entireBox}>
 
                         <View style={styles.boxImageView}>
-                          {item.nome==="Smiles" &&
+                          {item.nome === "Smiles" &&
                             <Image style={styles.boxLogo}
-                              source={require("../assets/images/Smiles-logo.png")} 
-                            /> 
+                              source={require("../assets/images/Smiles-logo.png")}
+                            />
                           }
-                          {item.nome==="Livelo" &&
+                          {item.nome === "Livelo" &&
                             <Image style={styles.boxLogo}
-                              source={require("../assets/images/Livelo-logo.png")} 
-                            /> 
+                              source={require("../assets/images/Livelo-logo.png")}
+                            />
                           }
-                          {item.nome==="Azul" &&
+                          {item.nome === "Azul" &&
                             <Image style={styles.boxLogo}
-                              source={require("../assets/images/Azul-logo.png")} 
-                            /> 
+                              source={require("../assets/images/Azul-logo.png")}
+                            />
                           }
-                          
+
                         </View>
-                        
+
                         <View style={styles.boxTextView}>
 
                           <View style={styles.boxTextView}>
@@ -169,7 +167,7 @@ class MilesListScreen extends React.Component {
 
                     </TouchableOpacity>
                   </View>
-                  
+
                 )}
                 keyExtractor={item => item.nome}
               />
@@ -204,8 +202,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     margin: 10,
   },
-  entireBoxView:{
-    flex:1,
+  entireBoxView: {
+    flex: 1,
     width: Dimensions.get("window").width * 0.9,
     marginTop: 10,
     backgroundColor: 'rgba(70,97,116, 0.3)',
@@ -217,25 +215,25 @@ const styles = StyleSheet.create({
     margin: 10,
     height: Dimensions.get("window").width * 0.3,
   },
-  boxImageView:{
+  boxImageView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  boxLogo:{
-    flex:1,
+  boxLogo: {
+    flex: 1,
     width: '100%',
     height: '100%',
     marginHorizontal: 20,
     resizeMode: "cover",
   },
-  boxTextView:{
+  boxTextView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'flex-start',
     paddingLeft: 5,
   },
-  textTotal:{
+  textTotal: {
     textAlign: 'center',
     fontSize: 22,
     flexWrap: 'wrap',
@@ -243,7 +241,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'Trebuchetms'
   },
-  textExpire:{
+  textExpire: {
     textAlign: 'center',
     fontSize: 14,
     flexWrap: 'wrap',

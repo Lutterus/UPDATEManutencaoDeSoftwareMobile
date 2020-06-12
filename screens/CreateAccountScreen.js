@@ -156,7 +156,7 @@ class CreateAccountContainer extends React.Component {
                 blurOnSubmit={false}
                 underlineColorAndroid={"#0000"}
                 placeholder="Nome"
-                placeholderTextColor="black"
+                placeholderTextColor="#C7CCD0"
                 onChangeText={TextInput => this.setState({ nome: TextInput })}
                 ref={input => { this.inputs['Nome'] = input; }}
               />
@@ -170,7 +170,7 @@ class CreateAccountContainer extends React.Component {
                 returnKeyType="next"
                 underlineColorAndroid={"#0000"}
                 placeholder="Email"
-                placeholderTextColor="black"
+                placeholderTextColor="#C7CCD0"
                 keyboardType="email-address"
                 autoCorrect={false}
                 autoCapitalize="none"
@@ -182,7 +182,7 @@ class CreateAccountContainer extends React.Component {
               <TextInput
                 returnKeyType="next"
                 placeholder="Telefone"
-                placeholderTextColor="black"
+                placeholderTextColor="#C7CCD0"
                 underlineColorAndroid={"#0000"}
                 refInput={ref => { this.input = ref }}
                 onSubmitEditing={() => { this.focusNextField('Senha') }}
@@ -198,7 +198,7 @@ class CreateAccountContainer extends React.Component {
                 ref={input => { this.inputs['Senha'] = input; }}
                 blurOnSubmit={false}
                 placeholder="Senha"
-                placeholderTextColor="black"
+                placeholderTextColor="#C7CCD0"
                 secureTextEntry
                 underlineColorAndroid={"#0000"}
                 returnKeyType="next"
@@ -211,7 +211,7 @@ class CreateAccountContainer extends React.Component {
               <TextInput
                 ref={input => { this.inputs['ConfirmaSenha'] = input; }}
                 placeholder="Confirmar senha"
-                placeholderTextColor="black"
+                placeholderTextColor="#C7CCD0"
                 secureTextEntry
                 underlineColorAndroid={"#0000"}
                 returnKeyType="done"
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textInputView: {
-    backgroundColor: 'rgba(255,255,255,0.9)',
+    backgroundColor: 'rgba(70,97,116, 0.3)',
     width: Dimensions.get("window").width * 0.8,
     borderRadius: 4,
     padding: 15,

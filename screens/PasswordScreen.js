@@ -115,7 +115,7 @@ class PasswordScreen extends React.Component {
             <View style={styles.textInputView}>
               <TextInput
                 placeholder="Email"
-                placeholderTextColor="black"
+                placeholderTextColor="#C7CCD0"
                 underlineColorAndroid={"#0000"}
                 returnKeyType="done"
                 keyboardType="email-address"
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   textInputView: {
-    backgroundColor: 'rgba(255,255,255,0.9)',
+    backgroundColor: 'rgba(70,97,116, 0.3)',
     width: Dimensions.get("window").width * 0.8,
     borderRadius: 4,
     padding: 15,

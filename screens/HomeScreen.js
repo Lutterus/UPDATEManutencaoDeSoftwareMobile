@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     padding: 2,
     flexDirection: "row",
     borderBottomWidth: 1,
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   textStyle: {
     fontSize: 16,
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     textAlign: "center",
     marginBottom: 5,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   styleTitle: {
     width: Dimensions.get("window").width * 1.1,

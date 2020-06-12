@@ -11,6 +11,7 @@ import {
   Alert,
   ImageBackground
 } from "react-native";
+import * as Font from 'expo-font';
 import CreateAccountService from "../services/CreateAccountService";
 import { AsyncStorage } from "react-native";
 import LoginService from "../services/LoginService";
@@ -35,22 +36,21 @@ class CreateAccountContainer extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
-      title: "CADASTRE-SE",
+      title: "CADASTRAR",
       headerTitleAlign: 'center',
       //header todo
       headerStyle: {
-        //backgroundColor: '#c6dbee',
-        backgroundColor: '#C6DBEE'
+        backgroundColor: '#f7f6f6'
       },
       //cor dos 3 elementos
-      headerTintColor: '#133e60',
+      headerTintColor: '#15415E',
       //style do titulo
       headerTitleStyle: {
         fontWeight: 'bold',
       },
       headerLeft: () => (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <HeaderBackButton tintColor={'#133e60'}
+          <HeaderBackButton tintColor={'#15415E'}
             onPress={() => navigation.goBack()} />
         </View>
 
@@ -62,8 +62,14 @@ class CreateAccountContainer extends React.Component {
     };
   };
 
-  _start() {
-    console.log("a")
+  _start = async () => {
+    console.log("antes de tudo")
+    await Font.loadAsync({
+      Trebuchetms: require('../assets/images/trebuchet-ms.ttf')
+    })
+  }
+
+  _end() {
   }
 
   focusNextField(key) {
@@ -71,7 +77,6 @@ class CreateAccountContainer extends React.Component {
   };
 
   onSubmitEditing = () => {
-    // specify the key of the ref, as done in the previous section.
     this.focusNextField('next-field');
   }
 
@@ -144,17 +149,18 @@ class CreateAccountContainer extends React.Component {
           style={styles.imageBackGround}>
 
           <View style={styles.upperGround}>
-            <View style={styles.textInputView}>
+            <KeyboardAvoidingView style={styles.textInputView}>
               <TextInput
                 returnKeyType="next"
                 onSubmitEditing={() => { this.focusNextField('Email'); }}
                 blurOnSubmit={false}
                 underlineColorAndroid={"#0000"}
                 placeholder="Nome"
+                placeholderTextColor="black"
                 onChangeText={TextInput => this.setState({ nome: TextInput })}
                 ref={input => { this.inputs['Nome'] = input; }}
               />
-            </View>
+            </KeyboardAvoidingView>
 
             <View style={styles.textInputView}>
               <TextInput
@@ -164,6 +170,7 @@ class CreateAccountContainer extends React.Component {
                 returnKeyType="next"
                 underlineColorAndroid={"#0000"}
                 placeholder="Email"
+                placeholderTextColor="black"
                 keyboardType="email-address"
                 autoCorrect={false}
                 autoCapitalize="none"
@@ -175,6 +182,7 @@ class CreateAccountContainer extends React.Component {
               <TextInput
                 returnKeyType="next"
                 placeholder="Telefone"
+                placeholderTextColor="black"
                 underlineColorAndroid={"#0000"}
                 refInput={ref => { this.input = ref }}
                 onSubmitEditing={() => { this.focusNextField('Senha') }}
@@ -190,6 +198,7 @@ class CreateAccountContainer extends React.Component {
                 ref={input => { this.inputs['Senha'] = input; }}
                 blurOnSubmit={false}
                 placeholder="Senha"
+                placeholderTextColor="black"
                 secureTextEntry
                 underlineColorAndroid={"#0000"}
                 returnKeyType="next"
@@ -202,6 +211,7 @@ class CreateAccountContainer extends React.Component {
               <TextInput
                 ref={input => { this.inputs['ConfirmaSenha'] = input; }}
                 placeholder="Confirmar senha"
+                placeholderTextColor="black"
                 secureTextEntry
                 underlineColorAndroid={"#0000"}
                 returnKeyType="done"
@@ -217,14 +227,13 @@ class CreateAccountContainer extends React.Component {
 
           <View style={styles.bottomGround}>
             <View style={styles.buttonView}>
-            <ImageBackground source={require("../assets/images/button.png")}
-              style={styles.imageBackGround}>
-              <TouchableOpacity Style={styles.button}
-                onPress={() => this.CreateAccount()}>
-                <Text style={styles.buttonText}>
-                  CADASTRE-SE
+              <ImageBackground source={require("../assets/images/button.png")} style={styles.imageBackGround}>
+                <TouchableOpacity Style={styles.button}
+                  onPress={() => this.CreateAccount()}>
+                  <Text style={styles.buttonText}>
+                    CADASTRE-SE
                 </Text>
-              </TouchableOpacity>
+                </TouchableOpacity>
               </ImageBackground>
             </View>
           </View>
@@ -250,7 +259,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textInputView: {
-    backgroundColor: 'white',
+    backgroundColor: 'rgba(255,255,255,0.9)',
     width: Dimensions.get("window").width * 0.8,
     borderRadius: 4,
     padding: 15,
@@ -264,14 +273,19 @@ const styles = StyleSheet.create({
   buttonView: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#133e60',
 
-    width: Dimensions.get("window").width * 0.80,
+    width: Dimensions.get("window").width * 0.85,
     height: Dimensions.get("window").height * 0.07,
-    backgroundColor: '#EBEFF2',
 
-    borderRadius: 50,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.20,
+    shadowRadius: 1.41,
+
+    elevation: 2,
   },
   button: {
     flex: 1
@@ -281,6 +295,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily: 'Trebuchetms'
   }
 });
 

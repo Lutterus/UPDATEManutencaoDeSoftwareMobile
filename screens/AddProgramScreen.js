@@ -108,7 +108,7 @@ class AddProgramScreen extends React.Component {
           "Ocorreu um erro durante o cadastro das milhas, favor verificar sua conexão com a internet",
           [{ text: "OK" }]
         );
-        
+
       } else {
         Alert.alert("Sucesso", "Milhas adicionadas com sucesso", [
           {
@@ -141,7 +141,7 @@ class AddProgramScreen extends React.Component {
 
             <View style={styles.inputView}>
               <Picker
-                style={{itemStyle: "black" }}
+                style={{ itemStyle: "black" }}
                 selectedValue={this.state.programa}
                 onValueChange={(itemValue, itemIndex) =>
                   this.setState({ programa: itemValue })
@@ -163,7 +163,7 @@ class AddProgramScreen extends React.Component {
 
             <View style={styles.inputView}>
               <DatePicker
-                style={{ width: Dimensions.get("window").width * 0.6}}
+                style={{ width: Dimensions.get("window").width * 0.6 }}
                 date={this.state.date}
                 mode="date"
                 placeholder="Data de Vencimento"
@@ -186,14 +186,13 @@ class AddProgramScreen extends React.Component {
             </View>
             <View style={styles.inputView}>
               <TextInput
-                ref={input => (this.dtVencimento = input)}
                 returnKeyLabel="go"
                 underlineColorAndroid={"#0000"}
                 keyboardType="number-pad"
                 autoCorrect={false}
                 autoCapitalize="none"
                 onChangeText={TextInput => this.setState({ quantidade: TextInput })}
-                placeholder="Data de Vencimento"
+                placeholder="Quantidade"
                 placeholderTextColor="#C7CCD0"
               />
             </View>

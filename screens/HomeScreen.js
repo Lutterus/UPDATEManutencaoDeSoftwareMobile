@@ -10,7 +10,6 @@ import {
   Alert,
   ImageBackground
 } from "react-native";
-import * as Font from 'expo-font';
 import LoginService from "../services/LoginService";
 import { AsyncStorage } from "react-native";
 import { NavigationEvents } from 'react-navigation';

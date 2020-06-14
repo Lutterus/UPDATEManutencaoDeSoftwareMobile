@@ -211,7 +211,7 @@ class EditMilesListScreen extends React.Component {
                 keyboardType="number-pad"
                 autoCorrect={false}
                 autoCapitalize="none"
-                onChangeText={TextInput => this.setState({ quantidade: TextInput })}
+                onChangeText={(quantidade) => { this.setState({ quantidade }) }}
                 value={this.state.quantidade}
               />
             </View>

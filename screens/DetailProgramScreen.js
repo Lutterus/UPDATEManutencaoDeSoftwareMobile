@@ -8,7 +8,6 @@ import {
   View,
   Dimensions,
   StyleSheet,
-  Image,
   TouchableOpacity,
   FlatList,
   ImageBackground

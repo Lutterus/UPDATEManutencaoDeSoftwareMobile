@@ -18,7 +18,7 @@ import LoginService from "../services/LoginService";
 import { HeaderBackButton } from 'react-navigation-stack';
 import { NavigationEvents } from 'react-navigation';
 
-class CreateAccountContainer extends React.Component {
+class CreateAccountScreen extends React.Component {
   constructor() {
     super();
     this.focusNextField = this.focusNextField.bind(this);
@@ -74,7 +74,7 @@ class CreateAccountContainer extends React.Component {
 
   focusNextField(key) {
     this.inputs[key].focus();
-  };
+  }
 
   onSubmitEditing = () => {
     this.focusNextField('next-field');
@@ -299,4 +299,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CreateAccountContainer;
+export default CreateAccountScreen;

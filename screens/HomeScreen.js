@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
-  KeyboardAvoidingView,
   Alert,
   ImageBackground
 } from "react-native";
@@ -19,6 +18,7 @@ import { NavigationEvents } from 'react-navigation';
 class HomeScreen extends React.Component {
   constructor() {
     super();
+    this.focusNextField = this.focusNextField.bind(this);
     this.LoginService = new LoginService();
     this.state = {
       showPassword: true,
@@ -43,7 +43,7 @@ class HomeScreen extends React.Component {
 
   focusNextField(key) {
     this.inputs[key].focus();
-  };
+  }
 
   onSubmitEditing = () => {
     this.focusNextField('next-field');
@@ -105,7 +105,7 @@ class HomeScreen extends React.Component {
                   autoCorrect={false}
                   autoCapitalize="none"
                   onChangeText={TextInput => this.setState({ email: TextInput })}
-                  //onSubmitEditing={() => { this.focusNextField('Senha') }}
+                  onSubmitEditing={() => { this.focusNextField('Senha') }}
                 />
               </View>
             </View>
@@ -114,8 +114,7 @@ class HomeScreen extends React.Component {
               <Text style={styles.text}>Senha</Text>
               <View style={styles.inputView}>
                 <TextInput
-                  //onSubmitEditing={() => { this.focusNextField('ConfirmaSenha'); }}
-                  //ref={input => { this.inputs['Senha'] = input; }}
+                  ref={input => { this.inputs['Senha'] = input; }}
                   secureTextEntry
                   underlineColorAndroid={"#0000"}
                   returnKeyType="next"
@@ -149,20 +148,20 @@ class HomeScreen extends React.Component {
 
         <View style={styles.lowerGround}>
           <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("CreateAccount")}
-            >
-              <Text style={styles.textButton}>
-                Cadastre-se
+            onPress={() => this.props.navigation.navigate("CreateAccount")}
+          >
+            <Text style={styles.textButton}>
+              Cadastre-se
               </Text>
-            </TouchableOpacity>
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Password")}
-            >
-              <Text style={styles.textButton}>
-                Esqueci minha senha
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("Password")}
+          >
+            <Text style={styles.textButton}>
+              Esqueci minha senha
               </Text>
-            </TouchableOpacity>
+          </TouchableOpacity>
         </View>
 
       </View>

@@ -21,7 +21,7 @@ import { NavigationEvents } from 'react-navigation';
 import DatePicker from 'react-native-datepicker'
 import { HeaderBackButton } from 'react-navigation-stack';
 
-class EditMilesScreen extends React.Component {
+class EditMilesListScreen extends React.Component {
   constructor() {
     super();
     this.EditMilesService = new EditMilesService();
@@ -78,7 +78,7 @@ class EditMilesScreen extends React.Component {
         this.getMile();
       });
     });
-    
+
   }
 
   _end() {
@@ -95,6 +95,11 @@ class EditMilesScreen extends React.Component {
 
   buttonMethodExclude = async () => {
     var res = await this.ExcludeMilesService.excludeMile(this.state.mile, this.state.accountLogin, this.state.programa);
+
+    if (res === false) {
+      console.log("false")
+    }
+
     Alert.alert("Sucesso", "Milhas excluídas com sucesso", [
       {
         text: "OK",
@@ -116,6 +121,10 @@ class EditMilesScreen extends React.Component {
         this.state.date,
         this.state.programa
       );
+
+      if (res === false) {
+        console.log("false")
+      }
 
       Alert.alert("Sucesso", "Milhas editadas com sucesso", [
         {
@@ -299,4 +308,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default EditMilesScreen;
+export default EditMilesListScreen;

@@ -157,8 +157,9 @@ class CreateAccountScreen extends React.Component {
                 underlineColorAndroid={"#0000"}
                 placeholder="Nome"
                 placeholderTextColor="#C7CCD0"
-                onChangeText={TextInput => this.setState({ nome: TextInput })}
                 ref={input => { this.inputs['Nome'] = input; }}
+                onChangeText={(nome) => { this.setState({ nome }) }}
+                value={this.state.nome}
               />
             </KeyboardAvoidingView>
 
@@ -174,7 +175,8 @@ class CreateAccountScreen extends React.Component {
                 keyboardType="email-address"
                 autoCorrect={false}
                 autoCapitalize="none"
-                onChangeText={TextInput => this.setState({ email: TextInput })}
+                onChangeText={(email) => { this.setState({ email }) }}
+                value={this.state.email}
               />
             </View>
 
@@ -187,8 +189,8 @@ class CreateAccountScreen extends React.Component {
                 refInput={ref => { this.input = ref }}
                 onSubmitEditing={() => { this.focusNextField('Senha') }}
                 blurOnSubmit={false}
-                onChangeText={TextInput => this.setState({ telefone: TextInput })}
                 keyboardType="phone-pad"
+                onChangeText={(telefone) => { this.setState({ telefone }) }}
                 value={this.state.telefone}
               />
             </View>
@@ -204,7 +206,8 @@ class CreateAccountScreen extends React.Component {
                 returnKeyType="next"
                 autoCorrect={false}
                 autoCapitalize="none"
-                onChangeText={TextInput => this.setState({ senha: TextInput })}
+                onChangeText={(senha) => { this.setState({ senha }) }}
+                value={this.state.senha}
               />
             </View>
             <View style={styles.textInputView}>
@@ -215,11 +218,10 @@ class CreateAccountScreen extends React.Component {
                 secureTextEntry
                 underlineColorAndroid={"#0000"}
                 returnKeyType="done"
-                onChangeText={TextInput =>
-                  this.setState({ confirmaSenha: TextInput })
-                }
                 autoCorrect={false}
                 autoCapitalize="none"
+                onChangeText={(confirmaSenha) => { this.setState({ confirmaSenha }) }}
+                value={this.state.confirmaSenha}
               />
             </View>
 

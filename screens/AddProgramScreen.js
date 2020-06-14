@@ -191,9 +191,10 @@ class AddProgramScreen extends React.Component {
                 keyboardType="number-pad"
                 autoCorrect={false}
                 autoCapitalize="none"
-                onChangeText={TextInput => this.setState({ quantidade: TextInput })}
+                onChangeText={(quantidade) => { this.setState({ quantidade }) }}
                 placeholder="Quantidade"
                 placeholderTextColor="#C7CCD0"
+                value={this.state.quantidade}
               />
             </View>
           </View>

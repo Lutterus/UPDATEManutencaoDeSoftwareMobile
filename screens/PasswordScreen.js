@@ -121,7 +121,8 @@ class PasswordScreen extends React.Component {
                 keyboardType="email-address"
                 autoCorrect={false}
                 autoCapitalize="none"
-                onChangeText={TextInput => this.setState({ email: TextInput })}
+                onChangeText={(email) => { this.setState({ email }) }}
+                value={this.state.email}
               />
             </View>
 

@@ -18,7 +18,6 @@ import { NavigationEvents } from 'react-navigation';
 class HomeScreen extends React.Component {
   constructor() {
     super();
-    this.focusNextField = this.focusNextField.bind(this);
     this.LoginService = new LoginService();
     this.state = {
       showPassword: true,
@@ -32,21 +31,9 @@ class HomeScreen extends React.Component {
   };
 
   _start = async () => {
-    console.log("antes de tudo")
-    await Font.loadAsync({
-      Trebuchetms: require('../assets/images/trebuchet-ms.ttf')
-    })
   }
 
   _end() {
-  }
-
-  focusNextField(key) {
-    this.inputs[key].focus();
-  }
-
-  onSubmitEditing = () => {
-    this.focusNextField('next-field');
   }
 
   loginTest = async () => {
@@ -104,8 +91,8 @@ class HomeScreen extends React.Component {
                   underlineColorAndroid={"#0000"}
                   autoCorrect={false}
                   autoCapitalize="none"
-                  onChangeText={TextInput => this.setState({ email: TextInput })}
-                  onSubmitEditing={() => { this.focusNextField('Senha') }}
+                  onChangeText={(email) => { this.setState({ email }) }}
+                  value={this.state.email}
                 />
               </View>
             </View>
@@ -114,13 +101,13 @@ class HomeScreen extends React.Component {
               <Text style={styles.text}>Senha</Text>
               <View style={styles.inputView}>
                 <TextInput
-                  ref={input => { this.inputs['Senha'] = input; }}
                   secureTextEntry
                   underlineColorAndroid={"#0000"}
                   returnKeyType="next"
                   autoCorrect={false}
                   autoCapitalize="none"
-                  onChangeText={TextInput => this.setState({ senha: TextInput })}
+                  onChangeText={(senha) => { this.setState({ senha }) }}
+                  value={this.state.senha}
                 />
               </View>
             </View>
@@ -221,7 +208,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     color: "grey",
     fontStyle: 'italic',
-    fontFamily: 'Trebuchetms'
   },
   inputView: {
     width: Dimensions.get("window").width * 0.75,
@@ -254,14 +240,12 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     fontWeight: 'bold',
-    fontFamily: 'Trebuchetms'
   },
   textButton: {
     textAlign: "center",
     color: "#15415E",
     fontSize: 16,
     fontWeight: 'bold',
-    fontFamily: 'Trebuchetms',
     margin: 5
   },
   line: {

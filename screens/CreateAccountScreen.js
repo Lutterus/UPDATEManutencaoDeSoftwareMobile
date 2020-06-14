@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Alert,
-  ImageBackground
+  ImageBackground,
+  ActivityIndicator
 } from "react-native";
 import * as Font from 'expo-font';
 import CreateAccountService from "../services/CreateAccountService";
@@ -29,7 +30,8 @@ class CreateAccountScreen extends React.Component {
       email: "",
       senha: "",
       telefone: "",
-      confirmaSenha: ""
+      confirmaSenha: "",
+      loading: true
     };
     this.inputs = {};
   }
@@ -63,10 +65,11 @@ class CreateAccountScreen extends React.Component {
   };
 
   _start = async () => {
-    console.log("antes de tudo")
-    await Font.loadAsync({
-      Trebuchetms: require('../assets/images/trebuchet-ms.ttf')
-    })
+    this.setState({ loading: true })
+    Font.loadAsync({
+      'Trebuchetms': require('../assets/images/trebuchet-ms.ttf')
+    }
+    ).then(() => this.setState({ loading: false }))
   }
 
   _end() {
@@ -138,110 +141,122 @@ class CreateAccountScreen extends React.Component {
   };
 
   render() {
-    return (
-      <View style={styles.viewBackground}>
+    if (this.state.loading === true) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <NavigationEvents
+            onWillFocus={() => this._start()}
+            onWillBlur={() => this._end()} />
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.viewBackground}>
 
-        <NavigationEvents
-          onWillFocus={() => this._start()}
-          onWillBlur={() => this._end()} />
+          <NavigationEvents
+            onWillFocus={() => this._start()}
+            onWillBlur={() => this._end()} />
 
-        <ImageBackground source={require("../assets/images/airport_blur.png")}
-          style={styles.imageBackGround}>
+          <ImageBackground source={require("../assets/images/airport_blur.png")}
+            style={styles.imageBackGround}>
 
-          <View style={styles.upperGround}>
-            <KeyboardAvoidingView style={styles.textInputView}>
-              <TextInput
-                returnKeyType="next"
-                onSubmitEditing={() => { this.focusNextField('Email'); }}
-                blurOnSubmit={false}
-                underlineColorAndroid={"#0000"}
-                placeholder="Nome"
-                placeholderTextColor="#C7CCD0"
-                ref={input => { this.inputs['Nome'] = input; }}
-                onChangeText={(nome) => { this.setState({ nome }) }}
-                value={this.state.nome}
-              />
-            </KeyboardAvoidingView>
+            <View style={styles.upperGround}>
+              <KeyboardAvoidingView style={styles.textInputView}>
+                <TextInput
+                  returnKeyType="next"
+                  onSubmitEditing={() => { this.focusNextField('Email'); }}
+                  blurOnSubmit={false}
+                  underlineColorAndroid={"#0000"}
+                  placeholder="Nome"
+                  placeholderTextColor="#C7CCD0"
+                  ref={input => { this.inputs['Nome'] = input; }}
+                  onChangeText={(nome) => { this.setState({ nome }) }}
+                  value={this.state.nome}
+                />
+              </KeyboardAvoidingView>
 
-            <View style={styles.textInputView}>
-              <TextInput
-                onSubmitEditing={() => { this.focusNextField('Telefone'); }}
-                ref={input => { this.inputs['Email'] = input; }}
-                blurOnSubmit={false}
-                returnKeyType="next"
-                underlineColorAndroid={"#0000"}
-                placeholder="Email"
-                placeholderTextColor="#C7CCD0"
-                keyboardType="email-address"
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={(email) => { this.setState({ email }) }}
-                value={this.state.email}
-              />
+              <View style={styles.textInputView}>
+                <TextInput
+                  onSubmitEditing={() => { this.focusNextField('Telefone'); }}
+                  ref={input => { this.inputs['Email'] = input; }}
+                  blurOnSubmit={false}
+                  returnKeyType="next"
+                  underlineColorAndroid={"#0000"}
+                  placeholder="Email"
+                  placeholderTextColor="#C7CCD0"
+                  keyboardType="email-address"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  onChangeText={(email) => { this.setState({ email }) }}
+                  value={this.state.email}
+                />
+              </View>
+
+              <View style={styles.textInputView}>
+                <TextInput
+                  returnKeyType="next"
+                  placeholder="Telefone"
+                  placeholderTextColor="#C7CCD0"
+                  underlineColorAndroid={"#0000"}
+                  refInput={ref => { this.input = ref }}
+                  onSubmitEditing={() => { this.focusNextField('Senha') }}
+                  blurOnSubmit={false}
+                  keyboardType="phone-pad"
+                  onChangeText={(telefone) => { this.setState({ telefone }) }}
+                  value={this.state.telefone}
+                />
+              </View>
+              <View style={styles.textInputView}>
+                <TextInput
+                  onSubmitEditing={() => { this.focusNextField('ConfirmaSenha'); }}
+                  ref={input => { this.inputs['Senha'] = input; }}
+                  blurOnSubmit={false}
+                  placeholder="Senha"
+                  placeholderTextColor="#C7CCD0"
+                  secureTextEntry
+                  underlineColorAndroid={"#0000"}
+                  returnKeyType="next"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  onChangeText={(senha) => { this.setState({ senha }) }}
+                  value={this.state.senha}
+                />
+              </View>
+              <View style={styles.textInputView}>
+                <TextInput
+                  ref={input => { this.inputs['ConfirmaSenha'] = input; }}
+                  placeholder="Confirmar senha"
+                  placeholderTextColor="#C7CCD0"
+                  secureTextEntry
+                  underlineColorAndroid={"#0000"}
+                  returnKeyType="done"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  onChangeText={(confirmaSenha) => { this.setState({ confirmaSenha }) }}
+                  value={this.state.confirmaSenha}
+                />
+              </View>
+
             </View>
 
-            <View style={styles.textInputView}>
-              <TextInput
-                returnKeyType="next"
-                placeholder="Telefone"
-                placeholderTextColor="#C7CCD0"
-                underlineColorAndroid={"#0000"}
-                refInput={ref => { this.input = ref }}
-                onSubmitEditing={() => { this.focusNextField('Senha') }}
-                blurOnSubmit={false}
-                keyboardType="phone-pad"
-                onChangeText={(telefone) => { this.setState({ telefone }) }}
-                value={this.state.telefone}
-              />
+            <View style={styles.bottomGround}>
+              <View style={styles.buttonView}>
+                <ImageBackground source={require("../assets/images/button.png")} style={styles.imageBackGround}>
+                  <TouchableOpacity Style={styles.button}
+                    onPress={() => this.CreateAccount()}>
+                    <Text style={styles.buttonText}>
+                      CADASTRE-SE
+                  </Text>
+                  </TouchableOpacity>
+                </ImageBackground>
+              </View>
             </View>
-            <View style={styles.textInputView}>
-              <TextInput
-                onSubmitEditing={() => { this.focusNextField('ConfirmaSenha'); }}
-                ref={input => { this.inputs['Senha'] = input; }}
-                blurOnSubmit={false}
-                placeholder="Senha"
-                placeholderTextColor="#C7CCD0"
-                secureTextEntry
-                underlineColorAndroid={"#0000"}
-                returnKeyType="next"
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={(senha) => { this.setState({ senha }) }}
-                value={this.state.senha}
-              />
-            </View>
-            <View style={styles.textInputView}>
-              <TextInput
-                ref={input => { this.inputs['ConfirmaSenha'] = input; }}
-                placeholder="Confirmar senha"
-                placeholderTextColor="#C7CCD0"
-                secureTextEntry
-                underlineColorAndroid={"#0000"}
-                returnKeyType="done"
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={(confirmaSenha) => { this.setState({ confirmaSenha }) }}
-                value={this.state.confirmaSenha}
-              />
-            </View>
+          </ImageBackground>
+        </View>
+      );
+    }
 
-          </View>
-
-          <View style={styles.bottomGround}>
-            <View style={styles.buttonView}>
-              <ImageBackground source={require("../assets/images/button.png")} style={styles.imageBackGround}>
-                <TouchableOpacity Style={styles.button}
-                  onPress={() => this.CreateAccount()}>
-                  <Text style={styles.buttonText}>
-                    CADASTRE-SE
-                </Text>
-                </TouchableOpacity>
-              </ImageBackground>
-            </View>
-          </View>
-        </ImageBackground>
-      </View>
-    );
   }
 }
 

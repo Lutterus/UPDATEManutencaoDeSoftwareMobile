@@ -8,7 +8,8 @@ import {
   Dimensions,
   Alert,
   TouchableOpacity,
-  ImageBackground
+  ImageBackground,
+  ActivityIndicator
 } from "react-native";
 import * as Font from 'expo-font';
 import PasswordService from "../services/PasswordService";
@@ -20,7 +21,8 @@ class PasswordScreen extends React.Component {
     super();
     this.PasswordService = new PasswordService();
     this.state = {
-      email: ""
+      email: "",
+      loading: true
     };
   }
 
@@ -53,10 +55,11 @@ class PasswordScreen extends React.Component {
   };
 
   _start = async () => {
-    console.log("antes de tudo")
-    await Font.loadAsync({
-      Trebuchetms: require('../assets/images/trebuchet-ms.ttf')
-    })
+    this.setState({ loading: true })
+    Font.loadAsync({
+      'Trebuchetms': require('../assets/images/trebuchet-ms.ttf')
+    }
+    ).then(() => this.setState({ loading: false }))
   }
 
   _end() {
@@ -99,52 +102,63 @@ class PasswordScreen extends React.Component {
   };
 
   render() {
-    return (
-      <View style={styles.viewBackground}>
+    if (this.state.loading === true) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <NavigationEvents
+            onWillFocus={() => this._start()}
+            onWillBlur={() => this._end()} />
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.viewBackground}>
 
-        <NavigationEvents
-          onWillFocus={() => this._start()}
-          onWillBlur={() => this._end()} />
+          <NavigationEvents
+            onWillFocus={() => this._start()}
+            onWillBlur={() => this._end()} />
 
-        <ImageBackground source={require("../assets/images/airport_blur.png")}
-          style={styles.imageBackGround}>
-          <View style={styles.upperGround}>
-          </View>
-
-          <View style={styles.middleGround}>
-            <View style={styles.textInputView}>
-              <TextInput
-                placeholder="Email"
-                placeholderTextColor="#C7CCD0"
-                underlineColorAndroid={"#0000"}
-                returnKeyType="done"
-                keyboardType="email-address"
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={(email) => { this.setState({ email }) }}
-                value={this.state.email}
-              />
+          <ImageBackground source={require("../assets/images/airport_blur.png")}
+            style={styles.imageBackGround}>
+            <View style={styles.upperGround}>
             </View>
 
-            <View style={styles.buttonView}>
-              <ImageBackground source={require("../assets/images/button.png")} style={styles.imageBackGround}>
-                <TouchableOpacity Style={styles.button}
-                  onPress={() => this.CreateAccount()}>
-                  <Text style={styles.buttonText}>
-                    CADASTRE-SE
-                  </Text>
-                </TouchableOpacity>
-              </ImageBackground>
+            <View style={styles.middleGround}>
+              <View style={styles.textInputView}>
+                <TextInput
+                  placeholder="Email"
+                  placeholderTextColor="#C7CCD0"
+                  underlineColorAndroid={"#0000"}
+                  returnKeyType="done"
+                  keyboardType="email-address"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  onChangeText={(email) => { this.setState({ email }) }}
+                  value={this.state.email}
+                />
+              </View>
+
+              <View style={styles.buttonView}>
+                <ImageBackground source={require("../assets/images/button.png")} style={styles.imageBackGround}>
+                  <TouchableOpacity Style={styles.button}
+                    onPress={() => this.CreateAccount()}>
+                    <Text style={styles.buttonText}>
+                      CADASTRE-SE
+                    </Text>
+                  </TouchableOpacity>
+                </ImageBackground>
+              </View>
             </View>
-          </View>
 
-          <View style={styles.bottomGround}>
-          </View>
+            <View style={styles.bottomGround}>
+            </View>
 
-        </ImageBackground>
+          </ImageBackground>
 
-      </View>
-    );
+        </View>
+      );
+    }
   }
 }
 

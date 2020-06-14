@@ -10,7 +10,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
-  ImageBackground
+  ImageBackground,
+  ActivityIndicator
 } from "react-native";
 import * as Font from 'expo-font';
 import { NavigationEvents } from 'react-navigation';
@@ -24,7 +25,8 @@ class DetailProgramScreen extends React.Component {
     this.state = {
       detailList: [],
       programName: "Bird's Nest",
-      programImage: "ABC"
+      programImage: "ABC",
+      loading: true
     };
   }
 
@@ -57,16 +59,18 @@ class DetailProgramScreen extends React.Component {
   };
 
   _start = async () => {
-    console.log("antes de tudo")
-    await Font.loadAsync({
-      Trebuchetms: require('../assets/images/trebuchet-ms.ttf')
-    })
-
-    AsyncStorage.getItem("login", (err, result) => {}).then(res => {
-      AsyncStorage.getItem("nome_programa", (err, result) => {}).then(res2 => {
-        this.updateDetailList(res, res2);
-      });
-    });
+    this.setState({ loading: true })
+    Font.loadAsync({
+      'Trebuchetms': require('../assets/images/trebuchet-ms.ttf')
+    }
+    ).then(() =>
+      AsyncStorage.getItem("login", (err, result) => { }).then(res => {
+        AsyncStorage.getItem("nome_programa", (err, result) => { }).then(res2 => {
+          this.updateDetailList(res, res2);
+          this.setState({ loading: false })
+        })
+      })
+    )
   }
 
   _end() {
@@ -83,46 +87,57 @@ class DetailProgramScreen extends React.Component {
   }
 
   render() {
-    return (
-      <View style={styles.viewBackground}>
+    if (this.state.loading === true) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <NavigationEvents
+            onWillFocus={() => this._start()}
+            onWillBlur={() => this._end()} />
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.viewBackground}>
 
-        <NavigationEvents
-          onWillFocus={() => this._start()}
-          onWillBlur={() => this._end()} />
+          <NavigationEvents
+            onWillFocus={() => this._start()}
+            onWillBlur={() => this._end()} />
 
-        <ImageBackground source={require("../assets/images/airport_blur.png")}
-          style={styles.imageBackGround}>
+          <ImageBackground source={require("../assets/images/airport_blur.png")}
+            style={styles.imageBackGround}>
 
-          <FlatList
-            data={this.state.detailList}
-            renderItem={({ item }) => (
+            <FlatList
+              data={this.state.detailList}
+              renderItem={({ item }) => (
 
-              <View style={styles.entireBoxView}>
-                <TouchableOpacity
-                  onPress={() => this.buttonMethod(item)}
-                >
-                  <View style={styles.entireBox}>
+                <View style={styles.entireBoxView}>
+                  <TouchableOpacity
+                    onPress={() => this.buttonMethod(item)}
+                  >
+                    <View style={styles.entireBox}>
 
-                    <View style={styles.insideItemViewLeft}>
-                      <Text style={styles.titleText}>Quantidade:</Text>
-                      <Text style={styles.text}>{item.quantidade}</Text>
+                      <View style={styles.insideItemViewLeft}>
+                        <Text style={styles.titleText}>Quantidade:</Text>
+                        <Text style={styles.text}>{item.quantidade}</Text>
+                      </View>
+
+                      <View style={styles.insideItemViewRight}>
+                        <Text style={styles.titleText}>Vencimento:</Text>
+                        <Text style={styles.text}>{item.dt_expiracao}</Text>
+                      </View>
+
                     </View>
-
-                    <View style={styles.insideItemViewRight}>
-                      <Text style={styles.titleText}>Vencimento:</Text>
-                      <Text style={styles.text}>{item.dt_expiracao}</Text>
-                    </View>
-
-                  </View>
-                </TouchableOpacity>
-              </View>
-            )}
-            keyExtractor={item => item.contaLogin}
+                  </TouchableOpacity>
+                </View>
+              )}
+              keyExtractor={item => item.contaLogin}
             />
-            
-        </ImageBackground>
-      </View>
-    );
+
+          </ImageBackground>
+        </View>
+      );
+    }
   }
 }
 
@@ -143,8 +158,8 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width * 0.9,
     marginTop: 10,
     backgroundColor: 'rgba(70,97,116, 0.3)',
-    borderBottomLeftRadius:20,
-    borderTopRightRadius:20,
+    borderBottomLeftRadius: 20,
+    borderTopRightRadius: 20,
     borderRadius: 5
   },
   entireBox: {
@@ -153,21 +168,21 @@ const styles = StyleSheet.create({
     margin: 10,
     height: Dimensions.get("window").width * 0.2,
   },
-  insideItemViewLeft:{
-    flex:1,
+  insideItemViewLeft: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     borderRightWidth: 1,
     borderColor: '#083b66'
   },
-  insideItemViewRight:{
-    flex:1,
+  insideItemViewRight: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     borderLeftWidth: 1,
     borderColor: '#083b66'
   },
-  titleText:{
+  titleText: {
     textAlign: 'center',
     fontSize: 20,
     flexWrap: 'wrap',
@@ -175,7 +190,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'Trebuchetms'
   },
-  text:{
+  text: {
     textAlign: 'center',
     fontSize: 17,
     flexWrap: 'wrap',

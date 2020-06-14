@@ -9,7 +9,8 @@ import {
   Alert,
   TouchableOpacity,
   Text,
-  ImageBackground
+  ImageBackground,
+  ActivityIndicator
 } from "react-native";
 import * as Font from 'expo-font';
 import ProgramService from "../services/ProgramService";
@@ -29,7 +30,8 @@ class AddProgramScreen extends React.Component {
       date: null,
       programa: null,
       user: "",
-      programsList: []
+      programsList: [],
+      loading: true
     };
   }
 
@@ -62,14 +64,16 @@ class AddProgramScreen extends React.Component {
   };
 
   _start = async () => {
-    console.log("antes de tudo")
-    await Font.loadAsync({
-      Trebuchetms: require('../assets/images/trebuchet-ms.ttf')
-    })
-
-    AsyncStorage.getItem("login", (err, result) => { }).then(res => {
-      this.setProgramsDefault(res);
-    });
+    this.setState({ loading: true })
+    Font.loadAsync({
+      'Trebuchetms': require('../assets/images/trebuchet-ms.ttf')
+    }
+    ).then(() =>
+      AsyncStorage.getItem("login", (err, result) => { }).then(res => {
+        this.setProgramsDefault(res);
+        this.setState({ loading: false })
+      })
+    )
   }
 
   _end() {
@@ -127,95 +131,106 @@ class AddProgramScreen extends React.Component {
   };
 
   render() {
-    return (
-      <View style={styles.viewBackground}>
+    if (this.state.loading === true) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <NavigationEvents
+            onWillFocus={() => this._start()}
+            onWillBlur={() => this._end()} />
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.viewBackground}>
 
-        <NavigationEvents
-          onWillFocus={() => this._start()}
-          onWillBlur={() => this._end()} />
+          <NavigationEvents
+            onWillFocus={() => this._start()}
+            onWillBlur={() => this._end()} />
 
-        <ImageBackground source={require("../assets/images/airport_blur.png")}
-          style={styles.imageBackGround}>
+          <ImageBackground source={require("../assets/images/airport_blur.png")}
+            style={styles.imageBackGround}>
 
-          <View style={styles.upperGround}>
+            <View style={styles.upperGround}>
 
-            <View style={styles.inputView}>
-              <Picker
-                style={{ itemStyle: "black" }}
-                selectedValue={this.state.programa}
-                onValueChange={(itemValue, itemIndex) =>
-                  this.setState({ programa: itemValue })
-                }
-              >
-                {this.state.programsList.map((itemValue, itemIndex) => {
-                  return (
-                    <Picker.Item
-                      label={itemValue.nome}
-                      value={itemValue.nome}
-                      key={itemValue.nome}
-                    />
-                  );
-                })}
-              </Picker>
+              <View style={styles.inputView}>
+                <Picker
+                  style={{ itemStyle: "black" }}
+                  selectedValue={this.state.programa}
+                  onValueChange={(itemValue, itemIndex) =>
+                    this.setState({ programa: itemValue })
+                  }
+                >
+                  {this.state.programsList.map((itemValue, itemIndex) => {
+                    return (
+                      <Picker.Item
+                        label={itemValue.nome}
+                        value={itemValue.nome}
+                        key={itemValue.nome}
+                      />
+                    );
+                  })}
+                </Picker>
+              </View>
+
+
+
+              <View style={styles.inputView}>
+                <DatePicker
+                  style={{ width: Dimensions.get("window").width * 0.6 }}
+                  date={this.state.date}
+                  mode="date"
+                  placeholder="Data de Vencimento"
+                  format="YYYY-MM-DD"
+                  confirmBtnText="Ok"
+                  cancelBtnText="Cancelar"
+                  customStyles={{
+                    dateIcon: {
+                      position: 'absolute',
+                      left: 0,
+                      top: 4,
+                      marginLeft: 0
+                    },
+                    dateInput: {
+                      marginLeft: 36
+                    },
+                  }}
+                  onDateChange={(date) => { this.setState({ date: date }) }}
+                />
+              </View>
+              <View style={styles.inputView}>
+                <TextInput
+                  returnKeyLabel="go"
+                  underlineColorAndroid={"#0000"}
+                  keyboardType="number-pad"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  onChangeText={(quantidade) => { this.setState({ quantidade }) }}
+                  placeholder="Quantidade"
+                  placeholderTextColor="#C7CCD0"
+                  value={this.state.quantidade}
+                />
+              </View>
             </View>
 
-
-
-            <View style={styles.inputView}>
-              <DatePicker
-                style={{ width: Dimensions.get("window").width * 0.6 }}
-                date={this.state.date}
-                mode="date"
-                placeholder="Data de Vencimento"
-                format="YYYY-MM-DD"
-                confirmBtnText="Ok"
-                cancelBtnText="Cancelar"
-                customStyles={{
-                  dateIcon: {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0
-                  },
-                  dateInput: {
-                    marginLeft: 36
-                  },
-                }}
-                onDateChange={(date) => { this.setState({ date: date }) }}
-              />
+            <View style={styles.bottomGround}>
+              <View style={styles.buttonView}>
+                <ImageBackground source={require("../assets/images/button.png")} style={styles.imageBackGround}>
+                  <TouchableOpacity Style={styles.button}
+                    onPress={this.addProgram}>
+                    <Text style={styles.buttonText}>
+                      SALVAR
+                    </Text>
+                  </TouchableOpacity>
+                </ImageBackground>
+              </View>
             </View>
-            <View style={styles.inputView}>
-              <TextInput
-                returnKeyLabel="go"
-                underlineColorAndroid={"#0000"}
-                keyboardType="number-pad"
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={(quantidade) => { this.setState({ quantidade }) }}
-                placeholder="Quantidade"
-                placeholderTextColor="#C7CCD0"
-                value={this.state.quantidade}
-              />
-            </View>
-          </View>
 
-          <View style={styles.bottomGround}>
-            <View style={styles.buttonView}>
-              <ImageBackground source={require("../assets/images/button.png")} style={styles.imageBackGround}>
-                <TouchableOpacity Style={styles.button}
-                  onPress={this.addProgram}>
-                  <Text style={styles.buttonText}>
-                    SALVAR
-                  </Text>
-                </TouchableOpacity>
-              </ImageBackground>
-            </View>
-          </View>
+          </ImageBackground>
 
-        </ImageBackground>
-
-      </View>
-    );
+        </View>
+      );
+    }
   }
 }
 

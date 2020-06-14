@@ -8,7 +8,7 @@ import {
   Image,
   Dimensions,
   Alert,
-  ImageBackground
+  ImageBackground,
 } from "react-native";
 import LoginService from "../services/LoginService";
 import { AsyncStorage } from "react-native";
@@ -21,7 +21,7 @@ class HomeScreen extends React.Component {
     this.state = {
       showPassword: true,
       email: "fulano@hotmail.com",
-      senha: "123"
+      senha: "123",
     };
   }
 

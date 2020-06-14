@@ -9,7 +9,8 @@ import {
   FlatList,
   Alert,
   ImageBackground,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from "react-native";
 import * as Font from 'expo-font';
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -22,7 +23,8 @@ class MilesListScreen extends React.Component {
     super();
     this.MilesService = new MilesService();
     this.state = {
-      milesList: []
+      milesList: [],
+      loading: true
     };
   }
 
@@ -62,13 +64,16 @@ class MilesListScreen extends React.Component {
     };
   };
   _start() {
+    this.setState({ loading: true })
     Font.loadAsync({
-      Trebuchetms: require('../assets/images/trebuchet-ms.ttf')
-    })
-
-    AsyncStorage.getItem("login", (err, result) => { }).then(res => {
-      this.updateMilesList(res);
-    });
+      'Trebuchetms': require('../assets/images/trebuchet-ms.ttf')
+    }
+    ).then(() =>
+      AsyncStorage.getItem("login", (err, result) => { }).then(res => {
+        this.updateMilesList(res);
+        this.setState({ loading: false })
+      })
+    )
   }
 
   _end() {
@@ -99,84 +104,95 @@ class MilesListScreen extends React.Component {
   }
 
   render() {
-    return (
-      <View style={styles.viewBackground}>
+    if (this.state.loading === true) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <NavigationEvents
+            onWillFocus={() => this._start()}
+            onWillBlur={() => this._end()} />
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.viewBackground}>
 
-        <NavigationEvents
-          onWillFocus={() => this._start()}
-          onWillBlur={() => this._end()} />
+          <NavigationEvents
+            onWillFocus={() => this._start()}
+            onWillBlur={() => this._end()} />
 
-        <ImageBackground source={require("../assets/images/airport_blur.png")}
-          style={styles.imageBackGround}>
+          <ImageBackground source={require("../assets/images/airport_blur.png")}
+            style={styles.imageBackGround}>
 
-          {this.state.milesList.length === 0 ? (
+            {this.state.milesList.length === 0 ? (
 
-            <View style={styles.textBox}>
-              <Text style={styles.text}>
-                Não foi possível encontrar milhas nesta conta
-                </Text>
-            </View>
+              <View style={styles.textBox}>
+                <Text style={styles.text}>
+                  Não foi possível encontrar milhas nesta conta
+                  </Text>
+              </View>
 
-          ) : (
+            ) : (
 
-              <FlatList
-                data={this.state.milesList}
-                renderItem={({ item }) => (
+                <FlatList
+                  data={this.state.milesList}
+                  renderItem={({ item }) => (
 
-                  <View style={styles.entireBoxView}>
-                    <TouchableOpacity
-                      onPress={() => this.saveStateBeforeLaunch(item.nome)}
-                    >
-                      <View style={styles.entireBox}>
+                    <View style={styles.entireBoxView}>
+                      <TouchableOpacity
+                        onPress={() => this.saveStateBeforeLaunch(item.nome)}
+                      >
+                        <View style={styles.entireBox}>
 
-                        <View style={styles.boxImageView}>
-                          {item.nome === "Smiles" &&
-                            <Image style={styles.boxLogo}
-                              source={require("../assets/images/Smiles-logo.png")}
-                            />
-                          }
-                          {item.nome === "Livelo" &&
-                            <Image style={styles.boxLogo}
-                              source={require("../assets/images/Livelo-logo.png")}
-                            />
-                          }
-                          {item.nome === "Azul" &&
-                            <Image style={styles.boxLogo}
-                              source={require("../assets/images/Azul-logo.png")}
-                            />
-                          }
+                          <View style={styles.boxImageView}>
+                            {item.nome === "Smiles" &&
+                              <Image style={styles.boxLogo}
+                                source={require("../assets/images/Smiles-logo.png")}
+                              />
+                            }
+                            {item.nome === "Livelo" &&
+                              <Image style={styles.boxLogo}
+                                source={require("../assets/images/Livelo-logo.png")}
+                              />
+                            }
+                            {item.nome === "Azul" &&
+                              <Image style={styles.boxLogo}
+                                source={require("../assets/images/Azul-logo.png")}
+                              />
+                            }
 
-                        </View>
-
-                        <View style={styles.boxTextView}>
-
-                          <View style={styles.boxTextView}>
-                            <Text style={styles.textTotal}>
-                              Total: {item.somaMilhas}
-                            </Text>
                           </View>
 
                           <View style={styles.boxTextView}>
-                            <Text style={styles.textExpire}>
-                              Vencem em: ?
-                            </Text>
+
+                            <View style={styles.boxTextView}>
+                              <Text style={styles.textTotal}>
+                                Total: {item.somaMilhas}
+                              </Text>
+                            </View>
+
+                            <View style={styles.boxTextView}>
+                              <Text style={styles.textExpire}>
+                                Vencem em: ?
+                              </Text>
+                            </View>
+
                           </View>
-
                         </View>
-                      </View>
 
-                    </TouchableOpacity>
-                  </View>
+                      </TouchableOpacity>
+                    </View>
 
-                )}
-                keyExtractor={item => item.nome}
-              />
+                  )}
+                  keyExtractor={item => item.nome}
+                />
 
-            )}
+              )}
 
-        </ImageBackground>
-      </View>
-    )
+          </ImageBackground>
+        </View>
+      )
+    }
   }
 }
 

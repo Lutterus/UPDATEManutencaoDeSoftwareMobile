@@ -246,7 +246,7 @@ class CreateAccountScreen extends React.Component {
                   <TouchableOpacity Style={styles.button}
                     onPress={() => this.CreateAccount()}>
                     <Text style={styles.buttonText}>
-                      CADASTRE-SE
+                      RECUPERAR
                   </Text>
                   </TouchableOpacity>
                 </ImageBackground>
